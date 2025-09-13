@@ -36,11 +36,17 @@
     <section class="lojasSalvas">
         <h2 class="titleLojasSalvas">Lojas salvas</h2>
         <div class="contaiLojasSalvas">
-            {% for loja in lojas%}
-             <div class="cardLoja">
-                <h2 class="titleLoja">Nome:{{loja.nome}}</h2>
-                <p class="urlLoja">Url: {{loja.url}}</p>   
-            </div>
+            {% for loja in lojas %}
+            <form method="POST" action="{% url 'raspar_loja' %}" style="display: inline;">
+                {% csrf_token %}
+                <input type="hidden" name="nomeLoja" value="{{ loja.nome }}">
+                <input type="hidden" name="urlLoja" value="{{ loja.url }}">
+                <button type="submit" class="cardLoja">
+                <h2 class="titleLoja">Nome: {{ loja.nome }}</h2>
+                <p class="urlLoja">Url: {{ loja.url }}</p>
+                <!--keyLoja-->
+                </button>
+            </form>
             {% endfor %}
         </div>
     </section>

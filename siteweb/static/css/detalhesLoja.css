@@ -2,7 +2,8 @@
     display: flex;
     align-items: center;
     padding: 30px 18px;
-    border: 2px solid black;
+    border: 2px solid rgba(0, 0, 0, 0.117);
+    background-color: var(--corPrimaria);
 }
 .dadosLoja .dads1Loja{
     width: 50%;
@@ -12,15 +13,14 @@
     flex-direction: column;
 }
 .dadosLoja .dads1Loja span{
-    border: 0.5px solid rgba(0, 0, 0, 0.103);
+    border: 0.2px solid rgba(0, 0, 0, 0.059);
 }
 .dadosLoja .dads1Loja span h3{
-    font: normal 600 0.8em var(--fontPrimaria);
-    font-variant: small-caps;
+    font: normal 600 1em var(--fontPrimaria);
     color: rgba(0, 0, 0, 0.728);
 }
 .dadosLoja .dads1Loja .nomeLoja{
-    font: normal 600 1.4em var(--fontPrimaria);
+    font: normal 600 1.6em var(--fontPrimaria);
     color: rgba(0, 0, 0, 0.742);
 }
 .dadosLoja .dads1Loja .linkLoja{
@@ -28,13 +28,35 @@
     color: rgba(0, 0, 0, 0.742);
     width: 40vw;
     height: 60px;
-   
-    overflow:  scroll;
 }
 .dadosLoja .dads2Loja{
     display: flex;
     justify-content: center;
     width: 50%;
+}
+.containButton{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-color: rgba(0, 0, 0, 0);
+}
+.btnSalvar{
+  padding: 8px;
+  font: normal 600 0.8em var(--fontPrimaria);
+  font-variant: small-caps;
+  border-radius: 6px;
+  border: none;
+  width: 250px;
+}
+.btnRecarregar{
+  padding: 8px;
+  font: normal 600 0.8em var(--fontPrimaria);
+  border-radius: 6px;
+  border: none;
+  width: 250px;
+}
+.btnSalvar:hover,.btnRecarregar:hover{
+  transform: translateY(-2px);
 }
 .search-container{
     display: flex;
@@ -109,20 +131,24 @@
 
 /*Card produto*/
 .cardProduto{
+  position: relative;
     display: flex;
     flex-direction: column;
     width: 220px;
     border: 1px solid #cbcbcb;
+    box-shadow: 1px 3px 10px rgba(0, 0, 0, 0.081);
     border-radius: 20px;
     padding: 20px 8px;
     cursor: pointer;
-    transition: 0.2s;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
 }
 .cardProduto:hover{
-  transform: translateY(-2px);
+  transform: translateY(-0.2px);
 }
 .cardProduto .imgProduto{
-    width: 95%;
+    display: inline-block;
+    height: 80px;
     padding-top: 5px;
     margin: 0 auto;
 }
@@ -131,20 +157,21 @@
     color: #000000cc;
     padding: 2px 8px;
 }
-.cardProduto .conMenorValor{
-        display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 10px 5px;
-}
-.cardProduto .conMenorValor .frase{
-    font: normal 500 1em var(--fontPrimaria);
-    color: #00000072;
-}  
 .cardProduto .conMenorValor .valor{
     font: normal 600 1.1em var(--fontPrimaria);
+    padding: 10px 0px;
+    bottom: 0px; 
+}
+.btnComparar{
+  display: inline-block;
+    padding: 4px 5px;
+    border-radius: 5px;
+    font: normal 500 0.9em var(--fontPrimaria);
+    border: 1px solid rgba(0, 0, 0, 0.522);
+    bottom: 0px;
+    transition: 0.2s;
+}
+.btnComparar:hover{
+  transform: translateY(-2px);
 }
 
-.cardProduto .conMenorValor .frase{
-
-}              

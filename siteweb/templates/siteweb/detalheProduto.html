@@ -1,4 +1,5 @@
 {% load static %}
+{% load meus_filtros %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,57 +11,45 @@
     <link rel="stylesheet" href="{% static 'css/global.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
       <link rel="stylesheet" href="{% static 'css/header.css' %}">
-    <link rel="stylesheet" href="{% static 'css/detalhesLoja.css' %}">
+    <link rel="stylesheet" href="{% static 'css/detalhesProduto.css' %}">
 </head>
 <body>
     {% include 'componentes/header.html' %}
-    <section class="dadosLoja">
-        <div class="dads1Loja">
-            <h2 class="nomeLoja">{{itens.nomeLoja}}</h2>
-            <span>
-                <h3>Link da Loja</h3>
-                <p class="linkLoja"><br>{{itens.urlLoja }}</p>
-            </span>
-            
-           
+    <h1 class="titleDetalheProduto">Comparar Produto</h1>
+    <section class="dadosProduto">
+        {% for item in itens %}
+        <div class="dads1Produto">
+            <img src="{{item.imagemproduto}}" alt="" class="imagemProduto">
         </div>
-        <div class="dads2Loja">
-            <div class="search-container">
-                <h3 class="titleSearch">pesquise um produto</h3>
-                <form class="search-box" role="search">
-                    <input type="search" class="search-input" placeholder="Pesquisar..." aria-label="Buscar">
-                    <button class="search-btn" type="submit" title="Buscar">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M15.5 14h-.79l-.28-.27
-                            A6.471 6.471 0 0 0 16 9.5
-                            6.5 6.5 0 1 0 9.5 16
-                            c1.61 0 3.09-.59 4.23-1.57l.27.28v.79
-                            l5 4.99L20.49 19l-4.99-5zm-6 0
-                            C8.01 14 6 11.99 6 9.5
-                            S8.01 5 10.5 5
-                            15 7.01 15 9.5
-                            12.99 14 10.5 14z"/>
-                        </svg>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </section>
+        
+        <div class="dads2Produto">
+            <h2 class="nomeProduto">{{item.nomeproduto}}</h2>
+           <p class="precoProduto">R$ {{ item.precoproduto|formata_moeda  }}</p>
 
+        </div>
+        {% endfor %}
+    </section>
+    <h2 class="subtitleDetalheProduto">Produtos concorrentes</h2>
     <section class="produtosLoja">
         <div class="containProdutosLoja">
+            
                 <div class="cardProduto">
+                    <pre>{{ item|safe }}</pre>
                     <img src="{{item.imagem}}" alt="" class="imgProduto">
-                    <h2 class="titleProduto">{{item.nomeProduto}}</h2>
+                    <h2 class="titleProduto">{{item.nomeproduto}}</h2>
                     <span class="conMenorValor">
                         <p class="frase">Menor preço via </p>
-                        <p class="valor">R$ {{item.preco}}</p>
+                        <p class="valor">{{item.precoproduto}}</p>
                         <p class="frase">até 10x de R$302,95</p>
                     </span>
                 </div>
+          
         </div>
     </section>
 
+    <script>
+     
+    </script>
 
 </body>
 </html>

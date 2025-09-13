@@ -1,0 +1,79 @@
+body{
+    padding: 0px 10px;
+}
+.titleDetalheProduto{
+    font: normal 600 1.7em var(--fontPrimaria);
+    padding-top: 20px;
+    padding-left: 15px;
+    padding-bottom: 5px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.598);
+}
+.dadosProduto{
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    padding: 30px 25px;
+    border: 2px solid rgba(0, 0, 0, 0.192);
+}
+.dadosProduto .dads1Produto .imagemProduto{
+    width: 180px;
+}
+.dadosLoja .dads2Produto{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 50%;
+}
+.dadosProduto .dads2Produto .nomeProduto{
+    font: normal 600 1.2em var(--fontPrimaria);
+    font-variant: small-caps;
+    color: rgba(0, 0, 0, 0.728);
+    padding-bottom: 15px;
+}
+.precoProduto{
+    font: normal 600 1.6em var(--fontPrimaria);
+        color: rgba(0, 0, 0, 0.728);
+}
+
+.produtosLoja{
+    padding: 20px 10px;
+}
+.containProdutosLoja{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+.subtitleDetalheProduto{
+    font: normal 600 1.7em var(--fontPrimaria);
+    padding-top: 20px;
+    padding-left: 15px;
+    color:rgba(0, 0, 0, 0.598);
+}
+/*Card produto*/
+.cardProduto{
+    display: flex;
+    flex-direction: column;
+    width: 220px;
+    border: 1px solid #cbcbcb;
+    border-radius: 20px;
+    padding: 20px 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.cardProduto:hover{
+  transform: translateY(-2px);
+}
+.cardProduto .imgProduto{
+    width: 95%;
+    padding-top: 5px;
+    margin: 0 auto;
+}
+.cardProduto .titleProduto{
+    font: normal 600 0.8em var(--fontPrimaria);
+    color: #000000cc;
+    padding: 2px 8px;
+}
+.cardProduto .conMenorValor .valor{
+    font: normal 600 1.1em var(--fontPrimaria);
+}

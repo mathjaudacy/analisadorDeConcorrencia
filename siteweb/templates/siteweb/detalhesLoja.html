@@ -1,4 +1,5 @@
 {% load static %}
+{% load meus_filtros %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -21,13 +22,20 @@
                 <h3>Link da Loja</h3>
                 <p class="linkLoja"><br>{{ loja.url }}</p>
             </span>
-            
-            <button onclick="salvarLoja(this)"
+            <span class="containButton">
+                <button class="btnSalvar"
+                    onclick="salvarLoja(this)"
                     data-nome="{{ loja.nome }}" 
-                    data-url="{{ loja.url }}"        
-            >SALVAR LOJA</button>
-            <button>Recarregar produto</button>
+                    data-url="{{ loja.url }}">SALVAR LOJA</button>
+                <button class="btnRecarregar"
+                    onclick="recarregarProd(this)"
+                     data-nome="{{ loja.nome }}" 
+                    data-url="{{ loja.url }}"
+                >RECARREGAR PRODUTOS</button>
+            </span>
+            
         </div>
+
         <div class="dads2Loja">
             <div class="search-container">
                 <h3 class="titleSearch">pesquise um produto</h3>
@@ -50,25 +58,66 @@
             </div>
         </div>
     </section>
-
+        <button onclick="compararProdutos()">Comparar Produtos</button>
     <section class="produtosLoja">
         <div class="containProdutosLoja">
             {% for produto in produtos %}
                 <div class="cardProduto">
+                    <input type="checkbox" name="checkCard" class="checkCard"
+                        data-nomeLoja="{{loja.nome}}"
+                        data-urlLoja="{{loja.url}}"
+                        data-nomeProduto="{{produto.nome}}"
+                        data-precoProduto="{{produto.preco}}"
+                        data-imagemProduto="{{produto.imagem}}"
+                    >
                     <img src="{{produto.imagem}}" alt="" class="imgProduto">
                     <h2 class="titleProduto">{{produto.nome}}</h2>
                     <span class="conMenorValor">
-                        <p class="frase">Menor preço via </p>
-                        <p class="valor">R$ {{produto.preco}}</p>
-                        <p class="frase">até 10x de R$302,95</p>
+                        <p class="valor">{{produto.preco|formata_moeda }}</p>
                     </span>
-                    <a href="{% url 'detalhe_produto' %}?nomeLoja={{loja.nome}}&urlLoja={{loja.url}}&nome={{ produto.nome|urlencode }}&preco={{produto.preco}}&imagem={{produto.imagem|urlencode}}" class="compararProduto">Comparar Produto</a>
+                    <button class="btnComparar" onclick="detalhes_produto(this)"
+                        
+                    >
+                        Comparar produto
+                    </button>
                 </div>
             {% endfor %}
         </div>
     </section>
 
     <script>
+        function compararProdutos(){ 
+            const checkedBoxes = Array.from(document.querySelectorAll('.checkCard'))
+            .filter(checkbox => checkbox.checked)
+            .map(checkbox =>({
+                nome: checkbox.dataset.nomeproduto,
+                preco: checkbox.dataset.precoproduto,
+                imagem: checkbox.dataset.imagemproduto
+            }));
+            const jsonResult = JSON.stringify(checkedBoxes)
+            console.log(jsonResult)
+        }
+
+        function recarregarProd(dados){
+            const nomeLoja = dados.dataset.nome;
+            const urlLoja = dados.dataset.url;
+
+            fetch("{% url 'recarregar_prod' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify({
+                    nome: nomeLoja,
+                    url: urlLoja
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.mensagem);
+            });
+        }
         function salvarLoja(dados){
             const nomeLoja = dados.dataset.nome;
             const urlLoja = dados.dataset.url;
@@ -88,6 +137,31 @@
             .then(data => {
                 alert(data.mensagem);
             });
+        }
+        function detalhes_produto(dado){
+            //<a href="{% url 'detalhe_produto' %}?nomeLoja={{loja.nome}}&urlLoja={{loja.url}}&nome={{ produto.nome|urlencode }}&preco={{produto.preco}}&imagem={{produto.imagem|urlencode}}" class="compararProduto">Comparar Produto</a>
+            const dados = dado.dataset;
+            Object.entries(dados).forEach(([key, value]) => {
+                console.log(`${key}: ${value}`);
+            });
+            fetch("{% url 'detalhe_produto' %}", {
+                method: 'POST',
+                headers:{
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify(dados)
+            })
+            .then(response=> response.text())
+            .then(html =>{
+                   document.open();
+                    document.write(html);
+                    document.close();
+            })
+            .catch(error =>{
+                console.log("Erro:", error);
+            })
+          
         }
     </script>
 </body>

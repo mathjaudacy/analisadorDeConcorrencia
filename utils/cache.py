@@ -9,3 +9,6 @@ def salvar_cache(chave, dados, expira_em_segundos=5500):
 def ler_cache(chave):
     valor = r.get(chave)
     return json.loads(valor) if valor else None
+
+def apagar_cache(chave):
+    r.delete(chave)
