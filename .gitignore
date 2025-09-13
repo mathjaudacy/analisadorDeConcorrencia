@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.pyo
+*.exe
+*.dll
+*.docx
+*.pdb
+*.rdb
+Redis-x64-3.0.504/
+get-pip.py

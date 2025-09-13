@@ -14,6 +14,7 @@ pip install redis
 #Instar o memurai
 
 
+git remote add origin https://github.com/johnChk0/analisadorDeConcorrencia.git
 
 
 
