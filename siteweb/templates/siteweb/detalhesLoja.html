@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!--Estilos-->
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+      <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/detalhesLoja.css' %}">
+</head>
+<body>
+    {% include 'componentes/header.html' %}
+    <section class="dadosLoja">
+        <div class="dads1Loja">
+            <h2 class="nomeLoja">{{ loja.nome }}</h2>
+            <span>
+                <h3>Link da Loja</h3>
+                <p class="linkLoja"><br>{{ loja.url }}</p>
+            </span>
+            
+            <button onclick="salvarLoja(this)"
+                    data-nome="{{ loja.nome }}" 
+                    data-url="{{ loja.url }}"        
+            >SALVAR LOJA</button>
+            <button>Recarregar produto</button>
+        </div>
+        <div class="dads2Loja">
+            <div class="search-container">
+                <h3 class="titleSearch">pesquise um produto</h3>
+                <form class="search-box" role="search">
+                    <input type="search" class="search-input" placeholder="Pesquisar..." aria-label="Buscar">
+                    <button class="search-btn" type="submit" title="Buscar">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M15.5 14h-.79l-.28-.27
+                            A6.471 6.471 0 0 0 16 9.5
+                            6.5 6.5 0 1 0 9.5 16
+                            c1.61 0 3.09-.59 4.23-1.57l.27.28v.79
+                            l5 4.99L20.49 19l-4.99-5zm-6 0
+                            C8.01 14 6 11.99 6 9.5
+                            S8.01 5 10.5 5
+                            15 7.01 15 9.5
+                            12.99 14 10.5 14z"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section class="produtosLoja">
+        <div class="containProdutosLoja">
+            {% for produto in produtos %}
+                <div class="cardProduto">
+                    <img src="{{produto.imagem}}" alt="" class="imgProduto">
+                    <h2 class="titleProduto">{{produto.nome}}</h2>
+                    <span class="conMenorValor">
+                        <p class="frase">Menor preço via </p>
+                        <p class="valor">R$ {{produto.preco}}</p>
+                        <p class="frase">até 10x de R$302,95</p>
+                    </span>
+                    <a href="{% url 'detalhe_produto' %}?nomeLoja={{loja.nome}}&urlLoja={{loja.url}}&nome={{ produto.nome|urlencode }}&preco={{produto.preco}}&imagem={{produto.imagem|urlencode}}" class="compararProduto">Comparar Produto</a>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <script>
+        function salvarLoja(dados){
+            const nomeLoja = dados.dataset.nome;
+            const urlLoja = dados.dataset.url;
+
+            fetch("{% url 'salvar_loja' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify({
+                    nome: nomeLoja,
+                    url: urlLoja
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.mensagem);
+            });
+        }
+    </script>
+</body>
+</html>

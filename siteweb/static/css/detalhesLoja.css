@@ -1,0 +1,150 @@
+.dadosLoja{
+    display: flex;
+    align-items: center;
+    padding: 30px 18px;
+    border: 2px solid black;
+}
+.dadosLoja .dads1Loja{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-direction: column;
+}
+.dadosLoja .dads1Loja span{
+    border: 0.5px solid rgba(0, 0, 0, 0.103);
+}
+.dadosLoja .dads1Loja span h3{
+    font: normal 600 0.8em var(--fontPrimaria);
+    font-variant: small-caps;
+    color: rgba(0, 0, 0, 0.728);
+}
+.dadosLoja .dads1Loja .nomeLoja{
+    font: normal 600 1.4em var(--fontPrimaria);
+    color: rgba(0, 0, 0, 0.742);
+}
+.dadosLoja .dads1Loja .linkLoja{
+    font: normal 300 0.8em var(--fontPrimaria);
+    color: rgba(0, 0, 0, 0.742);
+    width: 40vw;
+    height: 60px;
+   
+    overflow:  scroll;
+}
+.dadosLoja .dads2Loja{
+    display: flex;
+    justify-content: center;
+    width: 50%;
+}
+.search-container{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.dadosLoja .dads2Loja .titleSearch{
+    font: normal 500 1em var(--fontPrimaria);
+    font-variant: small-caps;
+}
+
+/*Barra de pesquisa*/
+.search-container {
+      width: 100%;
+      max-width: 300px;
+      padding: 0 10px;
+    }
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-radius: 50px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      overflow: hidden;
+      transition: box-shadow .3s ease;
+    }
+    .search-box:focus-within {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    }
+    .search-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 2px 12px;
+      font-size: 12px;
+    }
+    .search-btn {
+      background: #4a90e2;
+      border: none;
+      padding: 10px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .3s ease;
+    }
+    .search-btn:hover {
+      background: #357abd;
+    }
+    .search-btn svg {
+      fill: #fff;
+      width: 20px;
+      height: 20px;
+    }
+    @media (max-width: 480px) {
+      .search-input {
+        font-size: 12px;
+      }
+      .search-btn {
+        padding: 2px 10px;
+      }
+    }
+
+.produtosLoja{
+    padding: 20px 10px;
+}
+.containProdutosLoja{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+/*Card produto*/
+.cardProduto{
+    display: flex;
+    flex-direction: column;
+    width: 220px;
+    border: 1px solid #cbcbcb;
+    border-radius: 20px;
+    padding: 20px 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.cardProduto:hover{
+  transform: translateY(-2px);
+}
+.cardProduto .imgProduto{
+    width: 95%;
+    padding-top: 5px;
+    margin: 0 auto;
+}
+.cardProduto .titleProduto{
+    font: normal 600 0.8em var(--fontPrimaria);
+    color: #000000cc;
+    padding: 2px 8px;
+}
+.cardProduto .conMenorValor{
+        display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 5px;
+}
+.cardProduto .conMenorValor .frase{
+    font: normal 500 1em var(--fontPrimaria);
+    color: #00000072;
+}  
+.cardProduto .conMenorValor .valor{
+    font: normal 600 1.1em var(--fontPrimaria);
+}
+
+.cardProduto .conMenorValor .frase{
+
+}              

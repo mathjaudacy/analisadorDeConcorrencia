@@ -1,0 +1,72 @@
+
+/*Formulario Dados Loja*/   
+.formDadosLoja{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+.dadosVendedor{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px 10px;
+}
+.dadosVendedor fieldset{
+    border: none;
+}
+.dadosVendedor label{
+    font: normal 600 1.3em var(--fontPrimaria);
+    font-variant: small-caps;
+}
+.dadosVendedor input{
+    font: normal 500 1em var(--fontPrimaria);
+    color: rgba(0, 0, 0, 0.614);
+    padding: 5px 10px;
+}
+
+/*Lojas salvas*/
+.lojasSalvas{
+
+}
+.titleLojasSalvas{
+text-align: center;
+padding-top: 20px;
+font: normal 600 1.2em var(--fontPrimaria);
+}
+.contaiLojasSalvas{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-top: 25px;
+}
+
+
+/*Card produto*/
+.cardLoja{
+    display: flex;
+    flex-direction: column;
+    width: 220px;
+    border: 1px solid #cbcbcb;
+    border-radius: 20px;
+    padding: 20px 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.cardLoja:hover{
+  transform: translateY(-2px);
+}
+.cardLoja .titleLoja{
+    font: normal 600 0.8em var(--fontPrimaria);
+    color: #000000cc;
+    padding: 2px 8px;
+}
+.urlLoja{
+    font: normal 500 1em var(--fontPrimaria);
+    color: #00000072;
+}  
+           

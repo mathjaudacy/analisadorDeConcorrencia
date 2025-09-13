@@ -1,0 +1,26 @@
+/*HEADER*/
+header{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: var(--corPrimaria);
+    padding: 10px;
+    padding-bottom: 20px;
+}
+header .itemMenuDesktop{
+    font: normal 500 0.9em var(--fontPrimaria);
+    color: black;
+}
+
+.logoHeader{
+    width: 160px;
+}
+.menuDesktop{
+    display: flex;
+    align-items: center;
+}
+.menuDesktop ul{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}

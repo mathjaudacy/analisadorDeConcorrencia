@@ -9,3 +9,13 @@ ul{
 a{
     text-decoration: none;
 }
+
+:root{
+    --corPrimaria: rgb(207, 208, 255);
+    --corSecundaria: ;
+    --corTerciaria: ;
+
+    --fontPrimaria: 'Poppins', Arial, Helvetica, sans-serif;
+    --fontSecundaria: ;
+    --fontTerciaria: ; 
+}
