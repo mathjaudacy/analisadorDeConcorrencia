@@ -58,8 +58,10 @@
             </div>
         </div>
     </section>
-        <button onclick="compararProdutos()">Comparar Produtos</button>
+
     <section class="produtosLoja">
+        <h2 class="titleComparar">Selecione os produtos que você quer comparar</h2>
+        <button class="btnCompProd" onclick="compararProdutos()">Comparar Produtos</button>
         <div class="containProdutosLoja">
             {% for produto in produtos %}
                 <div class="cardProduto">
@@ -94,8 +96,26 @@
                 preco: checkbox.dataset.precoproduto,
                 imagem: checkbox.dataset.imagemproduto
             }));
-            const jsonResult = JSON.stringify(checkedBoxes)
-            console.log(jsonResult)
+            console.log(checkedBoxes)
+
+            
+            fetch("{% url 'comparador' %}", {
+                method: 'POST',
+                headers:{
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify(checkedBoxes)
+            })
+            .then(response=> response.text())
+            .then(html =>{
+                   document.open();
+                    document.write(html);
+                    document.close();
+            })
+            .catch(error =>{
+                console.log("Erro:", error);
+            })
         }
 
         function recarregarProd(dados){
@@ -121,7 +141,7 @@
         function salvarLoja(dados){
             const nomeLoja = dados.dataset.nome;
             const urlLoja = dados.dataset.url;
-
+            console.log("Loja: "+ nomeLoja +"| Url: "+ urlLoja);
             fetch("{% url 'salvar_loja' %}", {
                 method: "POST",
                 headers: {
@@ -138,31 +158,10 @@
                 alert(data.mensagem);
             });
         }
-        function detalhes_produto(dado){
-            //<a href="{% url 'detalhe_produto' %}?nomeLoja={{loja.nome}}&urlLoja={{loja.url}}&nome={{ produto.nome|urlencode }}&preco={{produto.preco}}&imagem={{produto.imagem|urlencode}}" class="compararProduto">Comparar Produto</a>
-            const dados = dado.dataset;
-            Object.entries(dados).forEach(([key, value]) => {
-                console.log(`${key}: ${value}`);
-            });
-            fetch("{% url 'detalhe_produto' %}", {
-                method: 'POST',
-                headers:{
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": "{{ csrf_token }}"
-                },
-                body: JSON.stringify(dados)
-            })
-            .then(response=> response.text())
-            .then(html =>{
-                   document.open();
-                    document.write(html);
-                    document.close();
-            })
-            .catch(error =>{
-                console.log("Erro:", error);
-            })
+        /*function detalhes_produto(dado){
+            
           
-        }
+        }*/
     </script>
 </body>
 </html>

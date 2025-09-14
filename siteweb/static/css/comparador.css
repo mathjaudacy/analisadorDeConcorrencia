@@ -1,0 +1,56 @@
+body{
+    padding: 0px 10px;
+}
+
+.produtosComparados{
+
+}
+.containProdutosRasp{
+    display: flex;
+    align-items: center;
+}
+/*.produtoRasp*/
+.produtosConcorrentes{
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    overflow: hidden;
+}
+.containProdutosRasp{
+    border: 1px solid rgba(0, 0, 0, 0.322);
+}
+/*Card produto*/
+.cardProduto,.produtoRasp{
+    display: flex;
+    flex-direction: column;
+    width: 220px;
+    border: 1px solid #cbcbcb;
+    border-radius: 20px;
+    padding: 20px 8px;
+    height: 260px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.cardProduto:hover{
+  transform: translateY(-2px);
+}
+.cardProduto .imgProduto,.produtoRasp .imgProduto{
+    height: 110px;
+    padding-top: 5px;
+    margin: 0 auto;
+}
+.cardProduto .titleProduto, .produtoRasp .titleProduto{
+    font: normal 600 0.7em var(--fontPrimaria);
+    color: #000000cc;
+    padding: 2px 8px;
+}
+.cardProduto .conMenorValor .valor, .produtoRasp .conMenorValor .valor{
+    font: normal 600 1em var(--fontPrimaria);
+    padding: 4px;
+}
+/*Produtos raspados*/
+.produtoRasp{
+    background-color: #cbcbcb;
+    border-radius: 0px;
+}

@@ -1,0 +1,46 @@
+{% load static %}
+{% load meus_filtros %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+
+    <!--Estilos-->
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/comparador.css' %}">
+</head>
+<body>
+    {% include 'componentes/header.html' %}
+    <h1 class="titlecomparador">Comparar Produto</h1>
+    <a href="{{ url_download }}" download>Baixar Comparação</a>
+    <section class="produtosComparados">
+        {% for bloco in comparacoes%}
+            <div class="containProdutosRasp">
+                <div class="produtoRasp">
+                    <img src="{{bloco.principal.imagem}}" alt="" class="imgProduto">
+                    <h2 class="titleProduto">{{bloco.principal.nome}}</h2>
+                    <span class="conMenorValor">
+                        <p class="valor">{{bloco.principal.preco|formata_moeda }}</p>
+                    </span>
+                </div>
+                <div class="produtosConcorrentes">
+                    {% for concorrente in bloco.concorrentes %}
+                        <div class="cardProduto">
+                            <img src="{{concorrente.imagem}}" alt="" class="imgProduto">
+                            <h2 class="titleProduto">{{concorrente.nome}}</h2>
+                            <span class="conMenorValor">
+                                <p class="valor">{{concorrente.preco|formata_moeda }}</p>
+                            </span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </section>
+
+</body>
+</html>

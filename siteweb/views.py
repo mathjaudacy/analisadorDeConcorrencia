@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from siteweb.core.raspagem import raspar_dados
+from siteweb.core.rasparConc import raspagem_concorrentes
 from siteweb.core.utils import ler_todas_lojas
 #from utils.cache import salvar_cache, ler_cache
 from siteweb.core.servicos import executar_raspagem
 import json
-import locale
+from django.conf import settings
 
 def home(request):
     return render(request, 'siteweb/index.html')
@@ -21,17 +22,18 @@ def raspar_loja(request):
             'produtos': produtos
         })
     
-def detalhe_produto(request):
+def comparador(request):
     if request.method == 'POST':
         try:
             dados = json.loads(request.body)
-            print("Dados recebidos:", dados)
-            return render(request, "siteweb/detalheProduto.html", {"itens":[dados]})
+            raspagem, nome_arquivo = raspagem_concorrentes()#coloque o dados
+            url_download = settings.MEDIA_URL + nome_arquivo
+            
+            return render(request, "siteweb/comparador.html", {"comparacoes": raspagem,  "url_download": url_download})
         except json.JSONDecodeError:
-             return render(request, "siteweb/detalheProduto.html", {"erro": "Erro ao decodificar JSON"})
+                return render(request, "siteweb/comparador.html", {"erro": "Erro ao decodificar JSON"})
     else:
-        return render(request, "siteweb/detalheProduto.html", {"erro": "Método inválido"})
-
+            return render(request, "siteweb/comparador.html", {"erro": "Método inválido"})
 
 def lojas_salvas(request):
     lojas= ler_todas_lojas()

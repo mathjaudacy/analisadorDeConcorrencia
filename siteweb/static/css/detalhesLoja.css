@@ -48,7 +48,7 @@
   border: none;
   width: 250px;
 }
-.btnRecarregar{
+.btnRecarregar, .btnCompProd{
   padding: 8px;
   font: normal 600 0.8em var(--fontPrimaria);
   border-radius: 6px;
@@ -128,7 +128,20 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
 }
-
+.titleComparar{
+  font: normal 600 1.5em var(--fontPrimaria);
+  color: rgba(0, 0, 0, 0.733);
+  padding-bottom: 10px;
+}
+.btnCompProd{
+  background-color: var(--corPrimaria);
+  box-shadow: 1px 5px 10px #0000001e;
+  border: 1px solid rgba(26, 26, 26, 0.185);
+  margin-bottom: 10px;
+}
+.btnCompProd:hover{
+  transform: scale(1.03);
+}
 /*Card produto*/
 .cardProduto{
   position: relative;

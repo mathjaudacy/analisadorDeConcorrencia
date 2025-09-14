@@ -1,15 +1,31 @@
 import json
 from playwright.sync_api import sync_playwright
+import random
+import time
 
 def raspar_dados(playwright, BASE_URL):
     browser = playwright.chromium.launch(headless=False)
+    
+    USER_AGENTS = [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/117 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Safari/537.36",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/116 Safari/537.36"
+    ]
+    viewport={"width": 1280, "height": 800},
     context = browser.new_context(
-        user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
-        viewport={"width": 1280, "height": 800},
+        user_agent=random.choice(USER_AGENTS),
+        viewport={"width":1280,"height":800}
     )
     page = context.new_page()
     print("[INFO] Acessando página...")
-    page.goto(BASE_URL, timeout=60000)
+    page.goto(BASE_URL, timeout=50000)
+    time.sleep(2)
+    page.mouse.wheel(0, 1000)
+    time.sleep(1)
+    if "algo deu errado" in page.content():
+        print("[ERRO] Página de erro detectada. Abortando raspagem.")
+        browser.close()
+        return []
 
     page.wait_for_selector('div.s-main-slot', timeout=15000)
     print("[INFO] Página carregada, buscando produtos...")

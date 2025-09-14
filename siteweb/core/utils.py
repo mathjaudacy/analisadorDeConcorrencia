@@ -13,13 +13,14 @@ def salvar_loja(request):
             nome = dados.get('nome')
             url = dados.get('url')
             lojas = Loja.objects.filter(url=url)
-            if lojas == "" or lojas== null or lojas==0:
+            if not lojas.exists():
                 nova_loja = Loja(nome=nome, url=url)
                 nova_loja.save() 
                 print(f"Loja recebida: {nome} - {url}")
                 return JsonResponse({'mensagem': 'Loja salva com sucesso!'})
             else:
                 print("Loja ja existente.")
+                return JsonResponse({'mensagem': 'Loja já existente.'})
         except Exception as e:
             return JsonResponse({'mensagem': f'Erro ao salvar loja: {str(e)}'}, status=400)
     else:
@@ -32,7 +33,7 @@ def ler_todas_lojas():
 
     for loja in Loja.objects.all():
        lojas.append({
-            'keyLoja': loja.keyLoja,
+            'keyLoja': loja.id,
             'nome': loja.nome,
             'url': loja.url
        })

@@ -1,0 +1,36 @@
+[
+    {
+        "principal": {
+            "nome": "Liquidificador A",
+            "preco": "R$ 473,00",
+            "imagem": "...",
+            "url": "..."
+        },
+        "concorrentes": [
+            {"nome": "Concorrente 1", "preco": "R$ 459,00", "imagem": "...", "url": "..."},
+            {"nome": "Concorrente 2", "preco": "R$ 470,00", "imagem": "...", "url": "..."}
+        ]
+    },
+    {
+        "principal": {
+            "nome": "Liquidificador B",
+            "preco": "R$ 399,00",
+            "imagem": "...",
+            "url": "..."
+        },
+        "concorrentes": [
+            {"nome": "Concorrente 3", "preco": "R$ 389,00", "imagem": "...", "url": "..."}
+        ]
+    },
+    {
+        "principal": {
+            "nome": "Liquidificador C",
+            "preco": "R$ 799,00",
+            "imagem": "...",
+            "url": "..."
+        },
+        "concorrentes": [
+            {"nome": "Concorrente 4", "preco": "R$ 389,00", "imagem": "...", "url": "..."}
+        ]
+    }
+]
