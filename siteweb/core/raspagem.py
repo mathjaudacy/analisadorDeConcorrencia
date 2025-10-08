@@ -74,4 +74,8 @@ def raspar_dados(playwright, BASE_URL):
         json.dump(produtos, f, indent=4, ensure_ascii=False)
 
     browser.close()
+    if(produtos == 1 or produtos == None or produtos == "" or produtos == 0 ):
+        print(f"Numero de Produtos passados {produtos}")
+        print("A raspagem houve um erro, sera refeita!")
+        raspar_dados()
     return produtos

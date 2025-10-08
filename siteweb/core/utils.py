@@ -1,10 +1,25 @@
 from django.http import JsonResponse
 from utils.cache import salvar_cache, ler_cache, apagar_cache
-from siteweb.models import Loja
+from decimal import Decimal, InvalidOperation
+from siteweb.models import Loja, Produto
 import json
 import redis
 
 r=redis.Redis(host='localhost', port=6379, db=0)
+
+from decimal import Decimal, InvalidOperation
+
+def limpar_preco(valor_str):
+    if not valor_str:
+        return Decimal("0.00")
+    # Remove símbolo de moeda, espaços invisíveis e separador de milhar
+    valor_str = valor_str.replace("R$", "").replace("\xa0", "").replace(".", "").strip()
+    # Substitui vírgula por ponto
+    valor_str = valor_str.replace(",", ".")
+    try:
+        return Decimal(valor_str)
+    except InvalidOperation:
+        raise ValueError(f"Preço inválido: {valor_str}")
 
 def salvar_loja(request):
     if request.method == 'POST':
@@ -12,12 +27,29 @@ def salvar_loja(request):
             dados = json.loads(request.body)
             nome = dados.get('nome')
             url = dados.get('url')
+            produtosLoja = dados.get('produtosLoja')
             lojas = Loja.objects.filter(url=url)
-            if not lojas.exists():
+            loja = lojas.first()
+            quantProduto = Produto.objects.filter(loja_id=loja.id).count() if loja else 0
+            if not lojas.exists() or quantProduto == 0 :
                 nova_loja = Loja(nome=nome, url=url)
                 nova_loja.save() 
                 print(f"Loja recebida: {nome} - {url}")
-                return JsonResponse({'mensagem': 'Loja salva com sucesso!'})
+                print(f"\nProdutos Recebidos:\n")
+                for produto in produtosLoja:
+                    nome_prod = produto.get('nome')
+                    print(nome_prod)
+                    precoBruto = produto.get('preco')
+                    preco_prod = limpar_preco(precoBruto)
+                    imagem_prod = produto.get('imagem') 
+                    if not Produto.objects.filter(nome=nome_prod).exists():
+                        Produto.objects.create(
+                            nome=nome_prod,
+                            preco=preco_prod,   
+                            loja_id=nova_loja.id
+                        )
+                        print(f"{nome_prod} - {preco_prod} - {imagem_prod}\n")
+                return JsonResponse({'mensagem': 'Loja salva no DB com sucesso!'})
             else:
                 print("Loja ja existente.")
                 return JsonResponse({'mensagem': 'Loja já existente.'})
@@ -56,3 +88,5 @@ def recarregar_prod(request):
             return JsonResponse({'mensagem': f'Erro ao apagar cache: {str(e)}'}, status=400)
     else:
         return JsonResponse({'mensagem': 'Método não permitido'}, status=405)
+
+

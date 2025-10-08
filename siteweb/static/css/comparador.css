@@ -15,10 +15,12 @@ body{
     display: flex;
     align-items: center;
     gap: 1px;
+    max-width: 100%;
     overflow: hidden;
 }
 .containProdutosRasp{
     border: 1px solid rgba(0, 0, 0, 0.322);
+    overflow: hidden;
 }
 /*Card produto*/
 .cardProduto,.produtoRasp{
@@ -36,7 +38,8 @@ body{
   transform: translateY(-2px);
 }
 .cardProduto .imgProduto,.produtoRasp .imgProduto{
-    height: 110px;
+    
+    width: 80px;
     padding-top: 5px;
     margin: 0 auto;
 }

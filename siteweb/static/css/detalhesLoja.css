@@ -1,3 +1,35 @@
+#loading {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50% ,-50%);
+  padding: 30px;
+  width: 60%;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.945);
+  border-radius: 20px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2em;
+  z-index: 9999;
+}
+
+.spinner {
+  border: 8px solid #ccc;
+  border-top: 8px solid #007bff;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 .dadosLoja{
     display: flex;
     align-items: center;
@@ -174,17 +206,5 @@
     font: normal 600 1.1em var(--fontPrimaria);
     padding: 10px 0px;
     bottom: 0px; 
-}
-.btnComparar{
-  display: inline-block;
-    padding: 4px 5px;
-    border-radius: 5px;
-    font: normal 500 0.9em var(--fontPrimaria);
-    border: 1px solid rgba(0, 0, 0, 0.522);
-    bottom: 0px;
-    transition: 0.2s;
-}
-.btnComparar:hover{
-  transform: translateY(-2px);
 }
 

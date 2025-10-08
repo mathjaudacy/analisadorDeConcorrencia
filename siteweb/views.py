@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from siteweb.core.raspagem import raspar_dados
 from siteweb.core.rasparConc import raspagem_concorrentes
+from siteweb.core.inteligencio import comparacaoIa
 from siteweb.core.utils import ler_todas_lojas
 #from utils.cache import salvar_cache, ler_cache
 from siteweb.core.servicos import executar_raspagem
@@ -15,19 +16,23 @@ def raspar_loja(request):
         urlLoja = request.POST.get("urlLoja")
         nomeLoja = request.POST.get("nomeLoja")
         chave_cache = f"produtos:{nomeLoja}"
-        produtos = executar_raspagem(nomeLoja, urlLoja) #ler_cache(chave_cache)  
-       
+        produto = executar_raspagem(nomeLoja, urlLoja) #ler_cache(chave_cache)  
+        print("Produtos: ",produto)
+
         return render(request, 'siteweb/detalhesLoja.html', {
             'loja': {'nome': nomeLoja, 'url':urlLoja, 'chave-cache':chave_cache},
-            'produtos': produtos
+            'produtos': produto
         })
     
 def comparador(request):
     if request.method == 'POST':
         try:
             dados = json.loads(request.body)
-            raspagem, nome_arquivo = raspagem_concorrentes()#coloque o dados
-            url_download = settings.MEDIA_URL + nome_arquivo
+            raspagem, arquivo = raspagem_concorrentes(dados)
+            print(f"ARQUIVO: {arquivo}")
+            print("Raspagem concorrente: \n", raspagem)
+            comparacaoIa(arquivo)
+            url_download = settings.MEDIA_URL + arquivo
             
             return render(request, "siteweb/comparador.html", {"comparacoes": raspagem,  "url_download": url_download})
         except json.JSONDecodeError:
