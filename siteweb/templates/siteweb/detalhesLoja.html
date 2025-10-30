@@ -66,7 +66,19 @@
 
     <section class="produtosLoja">
         <h2 class="titleComparar">Selecione os produtos que você quer comparar</h2>
-        <button class="btnCompProd" onclick="compararProdutos()">Comparar Produtos</button>
+        <div class="divCompararProd">
+            <button class="btnCompProd" onclick="compararProdutos()">Comparar Produtos</button>
+            <fieldset>
+                <label for="pagesComparador">Digite quantas paginas você quer raspar</label>
+                <input type="text" name="pagesComparador" id="pagesComparador">
+            </fieldset>
+            <fieldset>
+                <label for="nivelCompat">Digite o nivel de compatibilidade</label>
+                <input type="text" name="nivelCompat" id="nivelCompat">
+            </fieldset>
+            
+        </div>
+  
         <div class="containProdutosLoja">
             {% for produto in produtos %}
                 <div class="cardProduto">
@@ -97,6 +109,23 @@
                 imagem: checkbox.dataset.imagemproduto
             }));
             console.log(checkedBoxes)
+
+            const num_paginas = document.getElementById("pagesComparador").value
+            const nivelCompat = document.getElementById("nivelCompat").value
+            if (num_paginas == 0 || num_paginas == null){
+                alert("Erro o numero de paginas e" + num_paginas);
+                console.log("Erro o numero de paginas e" + num_paginas)
+            }
+             if (nivelCompat == 0 || nivelCompat == null){
+                alert("Erro o numero de paginas e" + nivelCompat);
+                console.log("Erro o numero de paginas e" + nivelCompat)
+            }
+            const paylog ={
+                produtos: checkedBoxes,
+                numPages: num_paginas,
+                nivelCompat: nivelCompat
+            }
+
             const loading = document.getElementById("loading");
             loading.style.display = "flex"; 
              window.scrollTo({
@@ -111,7 +140,7 @@
                     "Content-Type": "application/json",
                     "X-CSRFToken": "{{ csrf_token }}"
                 },
-                body: JSON.stringify(checkedBoxes)
+                body: JSON.stringify(paylog)
             })
             .then(response=> response.text())
             .then(html =>{

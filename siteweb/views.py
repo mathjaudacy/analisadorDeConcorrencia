@@ -28,13 +28,19 @@ def comparador(request):
     if request.method == 'POST':
         try:
             dados = json.loads(request.body)
-            raspagem, arquivo = raspagem_concorrentes(dados)
+            produto = dados["produtos"]
+            numPages = dados["numPages"]
+            nivelCompat = dados["nivelCompat"]
+            raspagem, arquivo = raspagem_concorrentes(produto,numPages)
             print(f"ARQUIVO: {arquivo}")
             print("Raspagem concorrente: \n", raspagem)
-            comparacaoIa(arquivo)
-            url_download = settings.MEDIA_URL + arquivo
+            destinos = comparacaoIa(arquivo, nivelCompat)
+            destino_nao = destinos[0]
+            destino_sim = destinos[1]
+            resultados_sim = destinos[2]
             
-            return render(request, "siteweb/comparador.html", {"comparacoes": raspagem,  "url_download": url_download})
+            
+            return render(request, "siteweb/comparador.html", {"comparacoes": raspagem, "destino_nao": destino_nao, "destino_sim": destino_sim, "resultados_sim":resultados_sim  })
         except json.JSONDecodeError:
                 return render(request, "siteweb/comparador.html", {"erro": "Erro ao decodificar JSON"})
     else:

@@ -208,3 +208,12 @@
     bottom: 0px; 
 }
 
+.divCompararProd{
+  display: flex;
+  align-items: center;
+  gap:15px;
+}
+.divCompararProd fieldset{
+  display: flex;
+  flex-direction: column;
+}

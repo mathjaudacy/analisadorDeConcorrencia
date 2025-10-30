@@ -28,7 +28,7 @@ def executar_raspagem(nomeLoja, urlLoja):
                         {
                             "nome": p.nome,
                             "preco": float(p.preco),
-                            #"imagem": p.imagem.url if p.imagem else None,
+                            "imagem": p.imagem if p.imagem else None,
                             "loja": p.loja_id
                         }
                         for p in produtos
@@ -39,9 +39,9 @@ def executar_raspagem(nomeLoja, urlLoja):
                 print("Produtos encontrados no DB: " , len(produtos))
                 produto_list = [
                     {
-                        "nome": p.nome,
+                        "nome": p["nome"] if isinstance(p, dict) else p.nome,
                         "preco": float(p.preco),
-                        #"imagem": p.imagem.url if p.imagem else None,
+                        "imagem": p.imagem if p.imagem else None,
                         "loja": p.loja_id
                     }
                     for p in produtos

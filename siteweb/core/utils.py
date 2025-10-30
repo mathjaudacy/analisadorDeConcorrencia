@@ -4,6 +4,7 @@ from decimal import Decimal, InvalidOperation
 from siteweb.models import Loja, Produto
 import json
 import redis
+from tkinter import ttk
 
 r=redis.Redis(host='localhost', port=6379, db=0)
 
@@ -46,6 +47,7 @@ def salvar_loja(request):
                         Produto.objects.create(
                             nome=nome_prod,
                             preco=preco_prod,   
+                            imagem=imagem_prod,
                             loja_id=nova_loja.id
                         )
                         print(f"{nome_prod} - {preco_prod} - {imagem_prod}\n")
@@ -90,3 +92,6 @@ def recarregar_prod(request):
         return JsonResponse({'mensagem': 'Método não permitido'}, status=405)
 
 
+def abrirPaginaResultados(resultados_sim):
+    print(resultados_sim)
+    

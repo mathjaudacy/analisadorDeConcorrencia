@@ -2,15 +2,24 @@ import pandas as pd
 import os
 from datetime import datetime
 from playwright.sync_api import sync_playwright
+import random
+import time
 
 # Função para buscar concorrentes na Amazon
-def buscar_concorrentes(produto_nome, max_pages=2):
+def buscar_concorrentes(produto_nome, max_pages):
     url_base = f"https://www.amazon.com.br/s?k={produto_nome.replace(' ', '+')}"
     concorrentes = []
-
+    
+    USER_AGENTS = [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/117 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Safari/537.36",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/116 Safari/537.36"
+    ]
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        context = browser.new_context(locale="pt-BR")
+        context = browser.new_context(
+            user_agent=random.choice(USER_AGENTS),
+            locale="pt-BR")
         page = context.new_page()
 
         for page_num in range(1, max_pages + 1):
@@ -20,11 +29,77 @@ def buscar_concorrentes(produto_nome, max_pages=2):
 
             cards = page.query_selector_all("div[data-component-type='s-search-result']")
             for card in cards:
+
+                link_el = card.query_selector("a.a-link-normal")
+                if not link_el:
+                    print("Nenhum link encontrado: ", link_el)
+                    continue
+                href = link_el.evaluate('node => node.getAttribute("href")') if link_el else None
+                 
+                url = f"https://www.amazon.com.br{href}" if href else None
+                linkLoja = url
+                preco_el = card.query_selector("span.a-price span.a-offscreen")
+                preco = preco_el.inner_text().strip() if preco_el else None
+                try:
+                    context = browser.new_context(
+                        user_agent=random.choice(USER_AGENTS),
+                        locale="pt-BR")
+                    produto_page = context.new_page()
+                    produto_page.goto(url, timeout=60000)
+                    time.sleep(2)
+                    produto_page.mouse.wheel(0, 1000)
+                    time.sleep(1)
+                    produto_page.wait_for_selector("h1#title span#productTitle")
+                    nome_el = produto_page.query_selector("h1#title span#productTitle")
+                    if not nome_el:
+                        raise Exception("Titulo não encontrado")
+                    nome = nome_el.inner_text().strip() if nome_el else None
+                    if not nome or "hq" in nome.lower():
+                        continue
+                    nome_loja = produto_page.query_selector("span.offer-display-feature-text-message")
+                    nomeLoja = nome_loja.inner_text().strip() if nome_loja else None
+                    #Depois criar um controle aqui para verificar se e da loja principal
+
+                    img_el = produto_page.query_selector("#imgTagWrapperId #landingImage")
+                    imagem = img_el.get_attribute("src") if img_el else None
+
+                    # Seleciona todas as linhas da tabela de especificações
+                    rows = produto_page.query_selector_all("table.a-normal tbody tr")
+
+                    for row in rows:
+                        try:
+                            label_el = row.query_selector("td.a-span3 span.a-text-bold")
+                            value_el = row.query_selector("td.a-span9 span.po-break-word")
+
+                            label = label_el.inner_text().strip() if label_el else None
+                            value = value_el.inner_text().strip() if value_el else None
+
+                            if label and value:
+                                nome += f"|{label}:{value}"
+                        except Exception as e:
+                            print(f"Erro ao extrair especificação: {e}")
+                            continue
+                    nome = f"{nomeLoja}|{nome}" if nomeLoja else nome
+
+                    print("Certo", nome)
+
+                    concorrentes.append({
+                        "nome": nome,
+                        "preco": preco,
+                        "imagem": imagem,
+                        "url": linkLoja
+                    })
+                    produto_page.close()  
+                except Exception as e:
+                    print(f"Erro ao acessar {url}: {e}")
+                    continue
+
+                """
                 nome_el = card.query_selector("h2 span")
                 nome = nome_el.inner_text().strip() if nome_el else None
                 if not nome or "hq" in nome.lower():
                     continue
-
+                
                 preco_el = card.query_selector("span.a-price span.a-offscreen")
                 preco = preco_el.inner_text().strip() if preco_el else None
 
@@ -41,16 +116,17 @@ def buscar_concorrentes(produto_nome, max_pages=2):
                     "imagem": imagem,
                     "url": url
                 })
+                """
 
         browser.close()
     return concorrentes
 
 # Função principal
-def raspagem_concorrentes(produtos):
+def raspagem_concorrentes(produtos, numPage):
     raspagem = []
-
+    num_paginas = int(numPage)
     for produto in produtos:
-        concorrentes = buscar_concorrentes(produto["nome"])
+        concorrentes = buscar_concorrentes(produto["nome"], num_paginas)
         print(f"1° produto {produto["nome"]}")
         bloco = {
             "principal": {
