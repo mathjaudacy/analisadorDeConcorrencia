@@ -8,7 +8,7 @@ class Loja(models.Model):
         return self.nome
 
 class Produto(models.Model):
-    nome = models.CharField(max_length=255)
+    nome = models.CharField(max_length=600)
     preco = models.DecimalField(max_digits=10, decimal_places=2)
     imagem = models.TextField(null=True, blank=True)
     loja = models.ForeignKey(Loja, on_delete=models.CASCADE)

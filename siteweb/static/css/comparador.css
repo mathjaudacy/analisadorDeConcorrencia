@@ -25,8 +25,7 @@ body{
 /*Card produto*/
 .cardProduto,.produtoRasp{
     display: flex;
-    flex-direction: column;
-    width: 220px;
+    flex-direction: column; 
     border: 1px solid #cbcbcb;
     border-radius: 20px;
     padding: 20px 8px;
@@ -70,7 +69,11 @@ body{
   background-color: rgba(0,0,0,0.5);
   animation: fadeIn 0.3s ease-in-out;
 }
-
+.topoModal{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
 /* Conteúdo do modal */
 .modal-conteudo {
   background-color: #fff;
@@ -94,7 +97,32 @@ body{
 .fechar:hover {
   color: #000;
 }
+.tabelaRanking{
+  width: 100%;
+  border-collapse: collapse;
+}
 
+.tabelaRanking th,
+.tabelaRanking td,
+.tabelaRanking tr {
+  border: 1px solid rgba(0, 0, 0, 0.521);
+  font: normal 500 0.9em var(--fontPrimaria);
+  margin: 0px;
+  padding: 0px;
+}
+.tabelaRanking th{
+  background-color: #cbcbcb;
+  padding: 2px 3px;
+  font: normal 600 1em var(--fontPrimaria);
+  font-variant: small-caps;
+}
+.tabelaRanking td{
+  padding: 2px 3px;
+}
+.pdprincipal{
+  background-color: rgb(245, 245, 156);
+  border: 1px solid black;
+}
 /* Animações */
 @keyframes fadeIn {
   from {opacity: 0;}

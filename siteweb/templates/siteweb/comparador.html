@@ -21,16 +21,30 @@
 <!-- Estrutura do modal -->
 <div id="meuModal" class="modal">
   <div class="modal-conteudo">
-    <span class="fechar" onclick="fecharModal()">&times;</span>
-    <h2>Olá, John!</h2>
-    <p>Esse é seu modal bonitinho 😎</p>
+    <div class="topoModal">
+        <div id="conteudoExplicacao" class="conteudoExplicacao">
+
+        </div>
+        <span class="fechar" onclick="fecharModal()">&times;</span>
+    </div>
+    <table id="tabelaRanking" class="tabelaRanking">
+        <thead>
+            <th>n°</th>
+            <th>Loja</th>
+            <th>nome</th>
+            <th>preço</th>
+        </thead>
+        <tbody  >
+
+        </tbody>
+    </table>
   </div>
 </div>
 
     <h1 class="titlecomparador">Comparar Produto</h1>
     <a href="{{ destino_nao }}" download>Baixar Produtos incompativeis</a>
     <a href="{{ destino_sim }}" download>Baixar Produtos compativeis</a>
-    <button onclick="abrirModal('{{resultados_sim}}')">compararValores</button>
+    <button onclick="abrirModal()">compararValores</button>
     <section class="produtosComparados">
         {% for bloco in comparacoes%}
             <div class="containProdutosRasp">
@@ -55,10 +69,18 @@
             </div>
         {% endfor %}
     </section>
-
+    {{resultados_ranking|json_script:"dadosComparacao"}}
+    {{texto|json_script:"textoAjuste"}}
     <script>
-        function abrirModal(resultados_sim) {
-            modalCompararValores(resultados_sim)
+
+        const tabela = document.getElementById("tabelaRanking");
+        const tabelaCorpo = tabela.querySelector("tbody");
+        const conteudoExplicacao = document.getElementById("conteudoExplicacao");
+        let num = 0;
+
+        function abrirModal() {
+            const resultados_ranking = JSON.parse(document.getElementById("dadosComparacao").textContent);
+            modalCompararValores(resultados_ranking);
             document.getElementById("meuModal").style.display = "block";
         }
 
@@ -66,10 +88,42 @@
             document.getElementById("meuModal").style.display = "none";
         }
 
-        function modalCompararValores(resultados_sim){
-            console.log(resultados_sim)
+        function modalCompararValores(value){
+            const resultados_ranking = value;
+            const texto = JSON.parse(document.getElementById("textoAjuste").textContent);
+            conteudoExplicacao.innerHTML = `<p>${texto}</p>`;
+            console.log(resultados_ranking)
+            tabelaCorpo.innerHTML=""
+            resultados_ranking.map((value)=>{
+          
+                const tr = document.createElement("tr");
+
+                if(value.tipo == "principal"){                  
+                    tr.classList = "pdprincipal"
+                }
+                num += 1
+                const tdNum = document.createElement("td")
+                tdNum.textContent = num
+
+                const tdNome = document.createElement("td");
+                tdNome.textContent = value.nome;
+
+                const tdLoja = document.createElement("td");
+                tdLoja.textContent = value.loja;
+
+                const tdPreco = document.createElement("td");
+                tdPreco.textContent = `R$ ${value.preco.toFixed(2)}`;
+                
+
+                // adiciona as células na linha
+                tr.appendChild(tdNum);
+                tr.appendChild(tdLoja);
+                tr.appendChild(tdNome);
+                tr.appendChild(tdPreco);
+                tabelaCorpo.appendChild(tr)
+
+            })
         }
     </script>
-
 </body>
 </html>

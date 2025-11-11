@@ -48,7 +48,7 @@ def separar_nome_preco(coluna):
     nomes = []
     precos = []
     for valor in coluna:
-        if isinstance(valor, str) and valor.count("|") >= 2:
+        if isinstance(valor, str):
             partes = valor.split("|")
             preco_str = partes[-1].replace("R$", "").replace("\u00a0", "").replace(" ", "").replace(",", ".")
             nome = "|".join(partes[:-1]).strip()
@@ -172,14 +172,16 @@ def processar_parquet(origem_path, destino_path,nivelCompat):
     df_final = df[df["compatibilidade"] == "SIM"]
     df_nao = df[df["compatibilidade"] == "NÃO"]
     
-    resultados_sim = df.to_dict(orient="records")
+    resultados_sim = df_final.to_json(orient="records")
 
     df_final.to_parquet(destino_path, index=False)
-    print("\n✅ Novo parquet salvo em:", destino_path)
-    destino_nao = destino_path.replace("analiseIa-", "analiseIa_naoCompat-")
+    print("\n\n✅ Novo parquet salvo em:", destino_path)
 
+
+    destino_nao = destino_path.replace("analiseIa-", "analiseIa_naoCompat-")
     df_nao.to_parquet(destino_nao, index=False)
-    print("⚠️ Parquet com incompatibilidades salvo em:", destino_nao)
+    print("\n⚠️ Parquet com incompatibilidades salvo em:", destino_nao)
+    
     return destino_nao, destino_path, resultados_sim
 
 def comparacaoIa(arquivo, nivelCompat):

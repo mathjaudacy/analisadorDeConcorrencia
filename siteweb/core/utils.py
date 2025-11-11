@@ -82,12 +82,20 @@ def recarregar_prod(request):
             chave_cache = f"loja:{nome}" 
 
             apagar_cache(chave_cache)
+            loja = Loja.objects.filter(url=url).first()
+            if loja:
+                print("Loja encontrada.")
+                produtos = Produto.objects.filter(loja_id=loja.id)
+                produtos.delete()
+                print("Todos os produtos da loja foram apagados.")
+            else:
+                print("Loja não encontrada.")
             from siteweb.core.servicos import executar_raspagem
             executar_raspagem(nome, url)
 
-            return JsonResponse({'mensagem': 'Cache apagado com sucesso!'})
+            return JsonResponse({'mensagem': 'Loja e Cache apagados com sucesso, iniciando raspagem!'})
         except Exception as e:
-            return JsonResponse({'mensagem': f'Erro ao apagar cache: {str(e)}'}, status=400)
+            return JsonResponse({'mensagem': f'Erro ao apagar dados antigos: {str(e)}'}, status=400)
     else:
         return JsonResponse({'mensagem': 'Método não permitido'}, status=405)
 

@@ -1,6 +1,94 @@
 import pandas as pd
 import os
 from datetime import datetime
+
+def raspagem_concorrentes(produtos, numPage):
+    raspagem = []
+    for produto in produtos:
+        bloco = {
+            "principal": {
+                "nome": produto["nome"],
+                "preco": produto["preco"],
+                "imagem": "https://via.placeholder.com/150",
+                "url": "https://www.amazon.com.br/dp/fake"
+            },
+            "concorrentes": [
+                {
+                    "nome": f"{produto['nome']} Concorrente A | Marca:XYZ | Voltagem:220V",
+                    "preco": "R$ 129,99",
+                    "imagem": "https://via.placeholder.com/150",
+                    "url": "https://www.amazon.com.br/dp/fakeA"
+                },
+                {
+ "nome": f"{produto['nome']} Concorrente B | Marca:ABC | Voltagem:110V",
+                    "preco": "R$ 123,99",
+                    "imagem": "https://via.placeholder.com/150",
+                    "url": "https://www.amazon.com.br/dp/fakeB"
+                },
+                 {
+ "nome": f"{produto['nome']} Concorrente c | Marca:ABC | Voltagem:110V",
+                    "preco": "R$ 110,99",
+                    "imagem": "https://via.placeholder.com/150",
+                    "url": "https://www.amazon.com.br/dp/fakeB"
+                },
+                {
+                "nome": f"{produto['nome']} Concorrente d | Marca:ABC | Voltagem:110V",
+                    "preco": "R$ 10010,99",
+                    "imagem": "https://via.placeholder.com/150",
+                    "url": "https://www.amazon.com.br/dp/fakeB"
+                },
+                {
+                "nome": f"{produto['nome']} Concorrente e | Marca:ABC | Voltagem:110V",
+                    "preco": "R$ 100,99",
+                    "imagem": "https://via.placeholder.com/150",
+                    "url": "https://www.amazon.com.br/dp/fakeB"
+                },
+                {
+                "nome": f"{produto['nome']} Concorrente f | Marca:ABC | Voltagem:110V",
+                    "preco": "R$ 98,99",
+                    "imagem": "https://via.placeholder.com/150",
+                    "url": "https://www.amazon.com.br/dp/fakeB"
+                },
+                {
+                "nome": f"{produto['nome']} Concorrente g | Marca:ABC | Voltagem:110V",
+                    "preco": "R$ 140,99",
+                    "imagem": "https://via.placeholder.com/150",
+                    "url": "https://www.amazon.com.br/dp/fakeB"
+                },
+                {
+                "nome": f"{produto['nome']} Concorrente h | Marca:ABC | Voltagem:110V",
+                    "preco": "R$ 142,99",
+                    "imagem": "https://via.placeholder.com/150",
+                    "url": "https://www.amazon.com.br/dp/fakeB"
+                }
+            ]
+        }
+        raspagem.append(bloco)
+
+    linhas = []
+    for bloco in raspagem:
+        principal = bloco["principal"]
+        principal_txt = f"{principal['nome']}|{principal['preco']}"
+        for concorrente in bloco["concorrentes"]:
+            concorrente_txt = f"{concorrente['nome']}|{concorrente['preco']}"
+            linhas.append({
+                "principal": principal_txt,
+                "concorrente": concorrente_txt
+            })
+
+    df = pd.DataFrame(linhas)
+    df = df.astype(str)
+    os.makedirs("media", exist_ok=True)
+    nome_arquivo = f"comparacao_{datetime.now().strftime('%Y%m%d_%H%M%S')}.parquet"
+    caminho = os.path.join("media", nome_arquivo)
+    df.to_parquet(caminho, index=False, engine="pyarrow")
+
+    return raspagem, nome_arquivo
+"""
+#codigo ia
+import pandas as pd
+import os
+from datetime import datetime
 from playwright.sync_api import sync_playwright
 import random
 import time
@@ -94,7 +182,7 @@ def buscar_concorrentes(produto_nome, max_pages):
                     print(f"Erro ao acessar {url}: {e}")
                     continue
 
-                """
+                """"""
                 nome_el = card.query_selector("h2 span")
                 nome = nome_el.inner_text().strip() if nome_el else None
                 if not nome or "hq" in nome.lower():
@@ -116,7 +204,7 @@ def buscar_concorrentes(produto_nome, max_pages):
                     "imagem": imagem,
                     "url": url
                 })
-                """
+                """"""
 
         browser.close()
     return concorrentes
@@ -162,3 +250,4 @@ def raspagem_concorrentes(produtos, numPage):
 
 
 
+"""
